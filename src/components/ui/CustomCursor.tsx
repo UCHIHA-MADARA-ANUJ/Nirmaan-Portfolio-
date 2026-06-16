@@ -4,16 +4,21 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export default function CustomCursor() {
+  const [mounted, setMounted] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    if (window.innerWidth < 768) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      if (!target) return;
       if (
         target.tagName === "BUTTON" ||
         target.tagName === "A" ||
@@ -37,11 +42,10 @@ export default function CustomCursor() {
     };
   }, []);
 
-  if (typeof window === "undefined" || window.innerWidth < 768) return null;
+  if (!mounted) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden hidden md:block">
-      {/* Outer Halo */}
       <motion.div
         className={cn(
           "absolute w-8 h-8 rounded-full border border-signal/60 -translate-x-1/2 -translate-y-1/2 transition-all duration-200 ease-out flex items-center justify-center",
@@ -53,7 +57,6 @@ export default function CustomCursor() {
         }}
         transition={{ type: "tween", ease: "backOut", duration: 0.15 }}
       />
-      {/* Inner Dot */}
       <div
         className="absolute w-2 h-2 bg-signal rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_15px_#B6FF3C] transition-transform duration-100"
         style={{

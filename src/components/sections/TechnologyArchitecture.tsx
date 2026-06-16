@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Layers, Database, Cpu, Globe, Terminal, ChevronRight } from "lucide-react";
 import SectionLabel from "@/components/ui/SectionLabel";
@@ -8,6 +8,11 @@ import { cn } from "@/lib/utils";
 
 export default function TechnologyArchitecture() {
   const [activeLayer, setActiveLayer] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const getLayerIcon = (index: number) => {
     return index === 0 ? <Layers className="w-6 h-6 text-signal" /> : index === 1 ? <Globe className="w-6 h-6 text-electric" /> : index === 2 ? <Database className="w-6 h-6 text-ai-cyan" /> : index === 3 ? <Cpu className="w-6 h-6 text-warning" /> : <Terminal className="w-6 h-6 text-signal" />;
@@ -22,21 +27,23 @@ export default function TechnologyArchitecture() {
       {/* Grid Lines */}
       <div className="absolute inset-0 bg-[radial-gradient(#121A16_1px,transparent_1px)] [background-size:32px_32px] opacity-30 pointer-events-none" />
 
-      {/* Upward Streaming Data Laser Packets */}
+      {/* Upward Streaming Data Lasers: fixed lengths, 100% Hydration Match safe */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden flex justify-between -z-10 px-12">
-        {Array.from({ length: 6 }).map((_, idx) => (
+        {[140, 180, 120, 200, 150, 160].map((len, idx) => (
           <div key={idx} className="w-px h-full bg-white/5 relative">
-            <motion.div
-              className="w-full bg-gradient-to-b from-signal via-electric to-transparent absolute top-0 left-0 shadow-[0_0_15px_#B6FF3C]"
-              style={{ height: 100 + Math.random() * 100 }}
-              animate={{ y: ["-100%", "1000%"] }}
-              transition={{
-                duration: 4 + Math.random() * 6,
-                repeat: Infinity,
-                delay: Math.random() * 5,
-                ease: "linear",
-              }}
-            />
+            {mounted && (
+              <motion.div
+                className="w-full bg-gradient-to-b from-signal via-electric to-transparent absolute top-0 left-0 shadow-[0_0_15px_#B6FF3C]"
+                style={{ height: len }}
+                animate={{ y: ["-100%", "1000%"] }}
+                transition={{
+                  duration: 5 + (idx % 3) * 2,
+                  repeat: Infinity,
+                  delay: idx * 0.5,
+                  ease: "linear",
+                }}
+              />
+            )}
           </div>
         ))}
       </div>
@@ -106,7 +113,7 @@ export default function TechnologyArchitecture() {
             </div>
           </div>
 
-          {/* Right: Master Focus Panel (6 Cols) */}
+          {/* Right: Master Focus Panel Deck (6 Cols) */}
           <div className="lg:col-span-6 h-full min-h-[600px]">
             <AnimatePresence mode="wait">
               <motion.div
