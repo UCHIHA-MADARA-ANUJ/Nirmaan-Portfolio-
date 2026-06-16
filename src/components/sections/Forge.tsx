@@ -1,86 +1,47 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import SectionLabel from "@/components/ui/SectionLabel";
 import PhoneMockup from "@/components/ui/PhoneMockup";
 import { PRODUCT_JOURNEY_STEPS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { ShieldCheck, Zap, ArrowRight, RefreshCw, Layers } from "lucide-react";
+import { Zap, RefreshCw } from "lucide-react";
 
 export default function Forge() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const phoneRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
 
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  const backgroundColor = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.5, 0.8, 1],
+    ["#000000", "#03140F", "#051F18", "#02120E", "#000000"]
+  );
+
   useEffect(() => {
-    if (!sectionRef.current || !phoneRef.current) return;
-
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "bottom bottom",
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const index = Math.min(
-            Math.floor(progress * PRODUCT_JOURNEY_STEPS.length),
-            PRODUCT_JOURNEY_STEPS.length - 1
-          );
-          setActiveStep(index);
-        },
-      });
-
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "bottom bottom",
-        pin: phoneRef.current,
-        pinSpacing: false,
-      });
-
-      gsap.to(".forge-oled-sweep", {
-        backgroundColor: "#051A14",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: true,
-        },
-      });
-
-      // Background decorative SVGs continuous animations
-      gsap.to(".forge-floating-gear", {
-        rotation: 360,
-        duration: 35,
-        repeat: -1,
-        ease: "none",
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    return scrollYProgress.on("change", (latest) => {
+      const index = Math.min(
+        Math.floor(latest * PRODUCT_JOURNEY_STEPS.length),
+        PRODUCT_JOURNEY_STEPS.length - 1
+      );
+      setActiveStep(index);
+    });
+  }, [scrollYProgress]);
 
   return (
-    <section
+    <motion.section
       id="product"
-      ref={sectionRef}
-      className="forge-oled-sweep relative w-full bg-void text-white select-none transition-colors duration-1000 border-t border-white/10 overflow-hidden"
-      style={{ height: `${PRODUCT_JOURNEY_STEPS.length * 100}vh` }}
+      ref={containerRef}
+      style={{ backgroundColor, height: `${PRODUCT_JOURNEY_STEPS.length * 100}vh` }}
+      className="relative w-full text-white select-none border-t border-white/10 overflow-hidden"
     >
-      {/* Absolute Decorative Floating SVGs */}
-      <div className="absolute top-1/2 left-10 w-96 h-96 pointer-events-none opacity-20 -z-10">
-        <div className="forge-floating-gear w-full h-full rounded-full border-4 border-dashed border-signal/40" />
-      </div>
-
-      {/* Master Center Pinned Monolith Showcase Frame */}
-      <div
-        ref={phoneRef}
-        className="sticky top-0 h-screen w-full max-w-7xl mx-auto px-6 sm:px-16 flex flex-col lg:flex-row items-center justify-between py-12 pointer-events-none"
-      >
+      <div className="sticky top-0 h-screen w-full max-w-7xl mx-auto px-6 sm:px-16 flex flex-col lg:flex-row items-center justify-between py-12 pointer-events-none">
         
-        {/* Left Column: Asymmetric Pinned Copy (4 Cols) */}
         <div className="w-full lg:w-4/12 flex flex-col justify-center space-y-8 pointer-events-auto pt-16 lg:pt-0">
           <SectionLabel status="PROTOTYPE_LIVE">05 // The Digital Forge Walkthrough</SectionLabel>
 
@@ -98,7 +59,7 @@ export default function Forge() {
                       : "opacity-0 translate-y-12 scale-90 pointer-events-none"
                   )}
                 >
-                  <div className="font-display text-8xl sm:text-9xl font-black text-signal/20 leading-none preserve-3d">
+                  <div className="font-display text-8xl sm:text-9xl font-black text-signal/20 leading-none">
                     {step.step}
                   </div>
                   <h3 className="font-display font-extrabold text-4xl sm:text-6xl text-white mt-2 tracking-tight">
@@ -118,7 +79,6 @@ export default function Forge() {
           </div>
         </div>
 
-        {/* Center Column: Levitating Hardware Pinned Showcase (4 Cols) */}
         <div className="w-full lg:w-4/12 flex items-center justify-center relative my-auto pointer-events-auto">
           
           <div className="relative group hover:scale-105 transition-transform duration-700">
@@ -134,7 +94,6 @@ export default function Forge() {
                       isActive ? "opacity-100 scale-100 z-20" : "opacity-0 scale-95 z-10"
                     )}
                   >
-                    {/* Glowing background behind image so UI elements inside phone are 100% luminous and legible */}
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(182,255,60,0.15)_0,transparent_100%)] pointer-events-none" />
 
                     <div className="relative w-full h-full max-h-[500px] flex items-center justify-center">
@@ -151,7 +110,6 @@ export default function Forge() {
               })}
             </PhoneMockup>
 
-            {/* Faint Interactive Annotation Box */}
             <div className="absolute -right-14 top-1/2 glass-panel p-5 rounded-3xl border-2 border-signal/80 hidden sm:flex flex-col items-start gap-1 shadow-2xl animate-bounce bg-surface-2/95">
               <span className="font-mono text-[10px] text-signal font-extrabold tracking-widest uppercase flex items-center gap-1.5">
                 <RefreshCw className="w-3 h-3 animate-spin" /> IOT SYNCED
@@ -162,7 +120,6 @@ export default function Forge() {
 
         </div>
 
-        {/* Right Column: Executive Rail Dashboard (4 Cols) */}
         <div className="w-full lg:w-4/12 flex flex-col items-end justify-center pointer-events-auto hidden lg:flex">
           <div className="glass-panel p-8 sm:p-10 rounded-[40px] space-y-8 w-80 border border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-3xl bg-surface-2/95">
             <div className="absolute top-0 right-0 w-32 h-32 bg-signal/20 rounded-full blur-3xl pointer-events-none" />
@@ -178,7 +135,10 @@ export default function Forge() {
               {PRODUCT_JOURNEY_STEPS.map((step, i) => (
                 <button
                   key={step.step}
-                  onClick={() => setActiveStep(i)}
+                  onClick={() => {
+                    const targetScrollY = (i / PRODUCT_JOURNEY_STEPS.length) * (containerRef.current?.scrollHeight || 0) + (containerRef.current?.offsetTop || 0);
+                    window.scrollTo({ top: targetScrollY, behavior: "smooth" });
+                  }}
                   className={cn(
                     "w-full p-4 rounded-2xl text-left flex items-center justify-between transition-all cursor-pointer border font-bold text-sm",
                     i === activeStep
@@ -204,6 +164,6 @@ export default function Forge() {
         </div>
 
       </div>
-    </section>
+    </motion.section>
   );
 }
