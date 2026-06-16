@@ -38,15 +38,15 @@ export default function ImpactIntelligence() {
   return (
     <section id="impact" className="relative min-h-screen w-full bg-void py-32 px-6 sm:px-16 flex flex-col items-center justify-center overflow-hidden select-none border-t border-white/10">
       
-      {/* Avant-Garde Halos */}
+      {/* Avant-Garde Spotlights */}
       <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-gradient-to-tr from-signal/15 via-electric/10 to-transparent blur-[180px] pointer-events-none -z-10 rounded-full" />
 
-      {/* Avant-Garde Laser Grids */}
+      {/* Avant-Garde Grids */}
       <div className="absolute inset-0 bg-[radial-gradient(#121A16_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto space-y-24">
         
-        {/* Executive Header */}
+        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-12 border-b border-white/10">
           <div className="space-y-6 max-w-4xl">
             <SectionLabel status="TELEMETRY_ANALYTICS">11 // Environmental Analytics</SectionLabel>
@@ -59,10 +59,9 @@ export default function ImpactIntelligence() {
           </p>
         </div>
 
-        {/* 4 Gigantic Masterpiece Number Callouts (12 Cols) */}
+        {/* 4 Gigantic Number Callouts (12 Cols) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           
-          {/* Stat 1 */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -78,7 +77,6 @@ export default function ImpactIntelligence() {
             <p className="font-body text-xs sm:text-sm text-white/70 font-light leading-relaxed">Verified via direct IoT digital weight scale sync.</p>
           </motion.div>
 
-          {/* Stat 2 */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -94,7 +92,6 @@ export default function ImpactIntelligence() {
             <p className="font-body text-xs sm:text-sm text-white/70 font-light leading-relaxed">Direct absolute atmospheric carbon offset savings.</p>
           </motion.div>
 
-          {/* Stat 3 */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -110,7 +107,6 @@ export default function ImpactIntelligence() {
             <p className="font-body text-xs sm:text-sm text-white/70 font-light leading-relaxed">CPCB authorized formal industrial processors.</p>
           </motion.div>
 
-          {/* Stat 4 */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -129,10 +125,9 @@ export default function ImpactIntelligence() {
 
         </div>
 
-        {/* Master Interactive Analytical Command Chart Deck */}
+        {/* Analytical Deck Container */}
         <div className="glass-panel p-10 sm:p-16 rounded-[48px] border-2 border-white/15 shadow-[0_40px_120px_rgba(0,0,0,0.95)] space-y-14 bg-surface-2/90">
           
-          {/* Chart Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8 border-b border-white/10 pb-8">
             <div className="space-y-2">
               <h3 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight">
@@ -143,7 +138,6 @@ export default function ImpactIntelligence() {
               </p>
             </div>
 
-            {/* Premium Toggle Switchers */}
             <div className="grid grid-cols-2 gap-2 p-2 rounded-full bg-surface border border-white/10 font-display text-sm font-bold shrink-0 shadow-inner">
               <button
                 onClick={() => setActiveChart("bar")}
@@ -168,9 +162,9 @@ export default function ImpactIntelligence() {
             </div>
           </div>
 
-          {/* Master Recharts Execution */}
-          <div className="w-full h-[500px] sm:h-[600px] pt-4">
-            <ResponsiveContainer width="100%" height="100%">
+          {/* Fallback & Explicit Dimensions */}
+          <div className="w-full h-[500px] sm:h-[600px] pt-4 relative">
+            <ResponsiveContainer width="100%" height={500}>
               {activeChart === "bar" ? (
                 <BarChart data={IMPACT_CHART_GENERATED_VS_RECYCLED} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="4 4" stroke="rgba(255,255,255,0.06)" vertical={false} />

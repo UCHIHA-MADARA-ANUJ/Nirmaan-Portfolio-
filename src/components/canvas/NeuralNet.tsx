@@ -4,7 +4,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
-function NeuralSwarm({ count = 250 }: { count: number }) {
+function NeuralSwarm({ count = 200 }: { count: number }) {
   const pointsRef = useRef<THREE.Points>(null);
 
   const positions = useMemo(() => {
@@ -20,11 +20,10 @@ function NeuralSwarm({ count = 250 }: { count: number }) {
   useFrame((state) => {
     if (!pointsRef.current) return;
     const time = state.clock.elapsedTime;
-    pointsRef.current.rotation.y = time * 0.05;
-    pointsRef.current.rotation.x = Math.sin(time * 0.02) * 0.2;
-    
-    // Breathing scale
-    const scale = 1 + Math.sin(time * 0.8) * 0.05;
+    pointsRef.current.rotation.y = time * 0.04;
+    pointsRef.current.rotation.x = Math.sin(time * 0.02) * 0.15;
+
+    const scale = 1 + Math.sin(time * 0.8) * 0.04;
     pointsRef.current.scale.set(scale, scale, scale);
   });
 
@@ -36,26 +35,26 @@ function NeuralSwarm({ count = 250 }: { count: number }) {
         size={0.06}
         sizeAttenuation
         depthWrite={false}
-        opacity={0.7}
+        opacity={0.65}
       />
     </Points>
   );
 }
 
 export default function NeuralNet() {
-  const [nodeCount, setNodeCount] = useState(250);
+  const [nodeCount, setNodeCount] = useState(200);
 
   useEffect(() => {
     if (window.innerWidth < 768) {
-      setNodeCount(90);
+      setNodeCount(80);
     }
   }, []);
 
   return (
-    <div className="absolute inset-0 pointer-events-none z-0 opacity-40 overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none z-0 opacity-40 overflow-hidden" style={{ pointerEvents: "none" }}>
       <Canvas
         camera={{ position: [0, 0, 8], fov: 60 }}
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
         gl={{ alpha: true, antialias: false }}
       >
         <NeuralSwarm count={nodeCount} />

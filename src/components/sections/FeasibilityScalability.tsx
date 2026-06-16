@@ -5,7 +5,7 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianG
 import SectionLabel from "@/components/ui/SectionLabel";
 import { MARKET_SCALABILITY_DATA } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { CheckCircle2, TrendingUp, Zap, ArrowRight } from "lucide-react";
+import { CheckCircle2, TrendingUp, Zap } from "lucide-react";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active) {
@@ -30,15 +30,15 @@ export default function FeasibilityScalability() {
   return (
     <section className="relative min-h-screen w-full bg-void py-32 px-6 sm:px-16 flex flex-col items-center justify-center overflow-hidden select-none border-t border-white/10">
       
-      {/* Avant-Garde Spotlights */}
+      {/* Spotlights */}
       <div className="absolute top-1/3 left-1/4 w-[900px] h-[550px] bg-gradient-to-tr from-signal/15 via-electric/10 to-transparent blur-[180px] pointer-events-none -z-10 rounded-full" />
 
-      {/* Grid Lines */}
+      {/* Grids */}
       <div className="absolute inset-0 bg-[radial-gradient(#121A16_1px,transparent_1px)] [background-size:32px_32px] opacity-30 pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto space-y-24">
         
-        {/* Executive Title */}
+        {/* Title */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-12 border-b border-white/10">
           <div className="space-y-6 max-w-4xl">
             <SectionLabel status="SCALABILITY_ENGINE">13 // Economic & Expansion Viability</SectionLabel>
@@ -51,10 +51,10 @@ export default function FeasibilityScalability() {
           </p>
         </div>
 
-        {/* Avant-Garde Feasibility Showcase (12 Cols) */}
+        {/* Deck (12 Cols) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
           
-          {/* Left: Feasibility Covenants (6 Cols) */}
+          {/* Left */}
           <div className="lg:col-span-6 glass-panel p-10 sm:p-14 rounded-[48px] border-2 border-white/10 flex flex-col justify-between space-y-10 relative overflow-hidden group hover:border-signal/80 transition-colors duration-500 shadow-2xl bg-surface-2/90">
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-signal to-electric opacity-60 group-hover:opacity-100 transition-opacity" />
 
@@ -98,7 +98,7 @@ export default function FeasibilityScalability() {
             </div>
           </div>
 
-          {/* Right: Network Effect Flywheel & Recharts Surge Deck (6 Cols) */}
+          {/* Right */}
           <div className="lg:col-span-6 flex flex-col justify-between space-y-10">
             
             {/* Top Loop */}
@@ -144,8 +144,8 @@ export default function FeasibilityScalability() {
                 <p className="font-body text-xs sm:text-sm text-white/60 font-light leading-relaxed">Projected exponential sector value expansion driving rapid urban electrification.</p>
               </div>
 
-              <div className="w-full h-64 pt-4">
-                <ResponsiveContainer width="100%" height="100%">
+              <div className="w-full h-64 pt-4 relative">
+                <ResponsiveContainer width="100%" height={250}>
                   <AreaChart data={MARKET_SCALABILITY_DATA} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="4 4" stroke="rgba(255,255,255,0.06)" vertical={false} />
                     <XAxis dataKey="year" stroke="rgba(255,255,255,0.5)" fontFamily="var(--font-mono)" fontSize={13} tickLine={false} />

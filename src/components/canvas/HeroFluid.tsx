@@ -23,7 +23,7 @@ function HighlyOptimizedSwarm({ count = 350 }: { count: number }) {
   const color = useMemo(() => new THREE.Color("#B6FF3C"), []);
 
   useFrame((state) => {
-    if (!meshRef.current) return;
+    if (!meshRef.current || !meshRef.current.instanceMatrix) return;
     const time = state.clock.elapsedTime;
 
     for (let i = 0; i < count; i++) {
