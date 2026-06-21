@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import Lenis from "lenis";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { ScrollTrigger } from "@/lib/gsap";
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -16,17 +16,15 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     // Sync Lenis scroll position with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
-    // Store the ticker callback so we can properly remove it on cleanup
-    const tickCallback = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-    gsap.ticker.add(tickCallback);
-
-    gsap.ticker.lagSmoothing(0);
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    const rafId = requestAnimationFrame(raf);
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove(tickCallback);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
