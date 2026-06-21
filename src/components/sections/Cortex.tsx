@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import NeuralNet from "@/components/canvas/NeuralNet";
+import dynamic from "next/dynamic";
+const NeuralNet = dynamic(() => import("@/components/canvas/NeuralNet"), { ssr: false });
 import SectionLabel from "@/components/ui/SectionLabel";
 import { AI_MODULES } from "@/lib/constants";
 import { cn } from "@/lib/utils";

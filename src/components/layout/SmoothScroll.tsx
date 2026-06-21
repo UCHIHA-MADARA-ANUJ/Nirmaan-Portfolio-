@@ -1,7 +1,6 @@
 "use client";
 import { useEffect } from "react";
 import Lenis from "lenis";
-import { ScrollTrigger } from "@/lib/gsap";
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -12,9 +11,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       wheelMultiplier: 1,
       touchMultiplier: 2,
     });
-
-    // Sync Lenis scroll position with GSAP ScrollTrigger
-    lenis.on("scroll", ScrollTrigger.update);
 
     function raf(time: number) {
       lenis.raf(time);

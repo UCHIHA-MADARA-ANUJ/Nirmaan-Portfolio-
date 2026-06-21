@@ -2,7 +2,8 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import Image from "next/image";
-import HeroFluid from "@/components/canvas/HeroFluid";
+import dynamic from "next/dynamic";
+const HeroFluid = dynamic(() => import("@/components/canvas/HeroFluid"), { ssr: false });
 import MagneticButton from "@/components/ui/MagneticButton";
 import OrbitChips from "@/components/ui/OrbitChips";
 import { SITE_CONFIG } from "@/lib/constants";
