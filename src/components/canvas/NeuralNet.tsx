@@ -1,21 +1,18 @@
 "use client";
-import React, { useRef, useMemo, useState, useEffect, Component, ReactNode } from "react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
-/* ── Error Boundary for WebGL failures ── */
-class WebGLErrorBoundary extends Component<
-  { children: ReactNode; fallback?: ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: { children: ReactNode; fallback?: ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
+/* ── WebGL Support Check ── */
+function checkWebGLSupport(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(canvas.getContext("webgl") || canvas.getContext("webgl2") || canvas.getContext("experimental-webgl"));
+  } catch {
+    return false;
   }
-  static getDerivedStateFromError() { return { hasError: true }; }
-  componentDidCatch(error: Error) { console.warn("WebGL error caught in NeuralNet:", error.message); }
-  render() { return this.state.hasError ? (this.props.fallback ?? null) : this.props.children; }
 }
 
 /* ── Neural Particle Swarm ── */
@@ -58,24 +55,30 @@ function NeuralNetFallback() {
 
 export default function NeuralNet() {
   const [nodeCount, setNodeCount] = useState(200);
+  const [mounted, setMounted] = useState(false);
+  const [webglAvailable, setWebglAvailable] = useState(false);
 
   useEffect(() => {
+    setWebglAvailable(checkWebGLSupport());
+    setMounted(true);
     if (window.innerWidth < 768) setNodeCount(80);
   }, []);
 
-  /* Always render Canvas to match server SSR output (avoids hydration #418).
-     The WebGLErrorBoundary will catch WebGL context failures and show fallback. */
+  /* Before mount: render nothing (matches SSR since dynamic import with ssr:false).
+     After mount: show Canvas if WebGL available, otherwise fallback. */
+  if (!mounted) return null;
+
+  if (!webglAvailable) return <NeuralNetFallback />;
+
   return (
     <div className="absolute inset-0 pointer-events-none z-0 opacity-40 overflow-hidden" style={{ pointerEvents: "none" }}>
-      <WebGLErrorBoundary fallback={<NeuralNetFallback />}>
-        <Canvas
-          camera={{ position: [0, 0, 8], fov: 60 }}
-          dpr={[1, 1.5]}
-          gl={{ alpha: true, antialias: false }}
-        >
-          <NeuralSwarm count={nodeCount} />
-        </Canvas>
-      </WebGLErrorBoundary>
+      <Canvas
+        camera={{ position: [0, 0, 8], fov: 60 }}
+        dpr={[1, 1.5]}
+        gl={{ alpha: true, antialias: false }}
+      >
+        <NeuralSwarm count={nodeCount} />
+      </Canvas>
     </div>
   );
 }
