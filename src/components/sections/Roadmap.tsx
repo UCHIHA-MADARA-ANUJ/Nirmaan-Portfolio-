@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { ROADMAP_MILESTONES } from "@/lib/constants";
 import { cn } from "@/lib/utils";

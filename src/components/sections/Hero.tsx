@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap";
 import Image from "next/image";
 import HeroFluid from "@/components/canvas/HeroFluid";
 import MagneticButton from "@/components/ui/MagneticButton";
